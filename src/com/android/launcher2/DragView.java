@@ -39,17 +39,17 @@ public class DragView extends View implements TweenCallback {
     // Number of pixels to add to the dragged item for scaling.  Should be even for pixel alignment.
     private static final int DRAG_SCALE = 40;
 
-    private Bitmap mBitmap;
+    private final Bitmap mBitmap;
     private Paint mPaint;
-    private int mRegistrationX;
-    private int mRegistrationY;
+    private final int mRegistrationX;
+    private final int mRegistrationY;
 
-    SymmetricalLinearTween mTween;
-    private float mScale;
+    final SymmetricalLinearTween mTween;
+    private final float mScale;
     private float mAnimationScale = 1.0f;
 
     private WindowManager.LayoutParams mLayoutParams;
-    private WindowManager mWindowManager;
+    private final WindowManager mWindowManager;
 
     /**
      * Construct the drag view.

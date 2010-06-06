@@ -32,9 +32,9 @@ import java.util.LinkedList;
  * This class is fifo.
  */
 public class DeferredHandler {
-    private LinkedList<Runnable> mQueue = new LinkedList();
-    private MessageQueue mMessageQueue = Looper.myQueue();
-    private Impl mHandler = new Impl();
+    private final LinkedList<Runnable> mQueue = new LinkedList();
+    private final MessageQueue mMessageQueue = Looper.myQueue();
+    private final Impl mHandler = new Impl();
 
     private class Impl extends Handler implements MessageQueue.IdleHandler {
         public void handleMessage(Message msg) {
@@ -58,7 +58,7 @@ public class DeferredHandler {
     }
 
     private class IdleRunnable implements Runnable {
-        Runnable mRunnable;
+        final Runnable mRunnable;
 
         IdleRunnable(Runnable r) {
             mRunnable = r;

@@ -17,7 +17,6 @@
 package com.android.launcher2;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +30,10 @@ import java.util.ArrayList;
  */
 public class ShortcutsAdapter  extends ArrayAdapter<ShortcutInfo> {
     private final LayoutInflater mInflater;
-    private final PackageManager mPackageManager;
     private final IconCache mIconCache;
 
     public ShortcutsAdapter(Context context, ArrayList<ShortcutInfo> apps) {
         super(context, 0, apps);
-        mPackageManager = context.getPackageManager();
         mInflater = LayoutInflater.from(context);
         mIconCache = ((LauncherApplication)context.getApplicationContext()).getIconCache();
     }

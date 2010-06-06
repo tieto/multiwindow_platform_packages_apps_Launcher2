@@ -60,7 +60,7 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
 
     private final WallpaperManager mWallpaperManager;
     
-    private int mDefaultScreen;
+    private final int mDefaultScreen;
 
     private boolean mFirstLayout = true;
 
@@ -98,8 +98,8 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
      */
     private CellLayout.CellInfo mVacantCache = null;
     
-    private int[] mTempCell = new int[2];
-    private int[] mTempEstimate = new int[2];
+    private final int[] mTempCell = new int[2];
+    private final int[] mTempEstimate = new int[2];
 
     private boolean mAllowLongPress = true;
 

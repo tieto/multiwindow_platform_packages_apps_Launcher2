@@ -37,8 +37,8 @@ import java.util.HashMap;
 import java.lang.ref.SoftReference;
 
 class LiveFolderAdapter extends CursorAdapter {
-    private boolean mIsList;
-    private LayoutInflater mInflater;
+    private final boolean mIsList;
+    private final LayoutInflater mInflater;
 
     private final HashMap<String, Drawable> mIcons = new HashMap<String, Drawable>();
     private final HashMap<Long, SoftReference<Drawable>> mCustomIcons =

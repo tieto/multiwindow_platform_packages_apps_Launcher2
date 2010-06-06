@@ -48,7 +48,7 @@ public class DeleteZone extends ImageView implements DropTarget, DragController.
     private Animation mHandleInAnimation;
     private Animation mHandleOutAnimation;
 
-    private int mOrientation;
+    private final int mOrientation;
     private DragController mDragController;
 
     private final RectF mRegion = new RectF();

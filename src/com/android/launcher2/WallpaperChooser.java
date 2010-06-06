@@ -146,7 +146,7 @@ public class WallpaperChooser extends Activity implements AdapterView.OnItemSele
     }
 
     private class ImageAdapter extends BaseAdapter {
-        private LayoutInflater mLayoutInflater;
+        private final LayoutInflater mLayoutInflater;
 
         ImageAdapter(WallpaperChooser context) {
             mLayoutInflater = context.getLayoutInflater();
@@ -191,7 +191,7 @@ public class WallpaperChooser extends Activity implements AdapterView.OnItemSele
     }
 
     class WallpaperLoader extends AsyncTask<Integer, Void, Bitmap> {
-        BitmapFactory.Options mOptions;
+        final BitmapFactory.Options mOptions;
 
         WallpaperLoader() {
             mOptions = new BitmapFactory.Options();
