@@ -28,7 +28,7 @@ class LauncherAppWidgetInfo extends ItemInfo {
      * Identifier for this widget when talking with
      * {@link android.appwidget.AppWidgetManager} for updates.
      */
-    int appWidgetId;
+    final int appWidgetId;
     
     /**
      * View that holds this widget after it's been created.  This view isn't created

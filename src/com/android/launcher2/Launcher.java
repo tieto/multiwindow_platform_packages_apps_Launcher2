@@ -199,8 +199,8 @@ public final class Launcher extends Activity
     private LauncherModel mModel;
     private IconCache mIconCache;
 
-    private ArrayList<ItemInfo> mDesktopItems = new ArrayList<ItemInfo>();
-    private static HashMap<Long, FolderInfo> mFolders = new HashMap<Long, FolderInfo>();
+    private final ArrayList<ItemInfo> mDesktopItems = new ArrayList<ItemInfo>();
+    private static final HashMap<Long, FolderInfo> mFolders = new HashMap<Long, FolderInfo>();
 
     private ImageView mPreviousView;
     private ImageView mNextView;

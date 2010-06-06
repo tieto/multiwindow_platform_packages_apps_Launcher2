@@ -61,16 +61,16 @@ public class LauncherModel extends BroadcastReceiver {
 
     private final LauncherApplication mApp;
     private final Object mLock = new Object();
-    private DeferredHandler mHandler = new DeferredHandler();
-    private Loader mLoader = new Loader();
+    private final DeferredHandler mHandler = new DeferredHandler();
+    private final Loader mLoader = new Loader();
 
     private boolean mBeforeFirstLoad = true;
     private WeakReference<Callbacks> mCallbacks;
 
-    private AllAppsList mAllAppsList;
-    private IconCache mIconCache;
+    private final AllAppsList mAllAppsList;
+    private final IconCache mIconCache;
 
-    private Bitmap mDefaultIcon;
+    private final Bitmap mDefaultIcon;
 
     public interface Callbacks {
         public int getCurrentWorkspaceScreen();
@@ -449,7 +449,7 @@ public class LauncherModel extends BroadcastReceiver {
         private class LoaderThread extends Thread {
             private Context mContext;
             private Thread mWaitThread;
-            private boolean mIsLaunching;
+            private final boolean mIsLaunching;
             private boolean mStopped;
             private boolean mWorkspaceDoneBinding;
 

@@ -34,7 +34,7 @@ class AllAppsList {
     public static final int DEFAULT_APPLICATIONS_NUMBER = 42;
     
     /** The list off all apps. */
-    public ArrayList<ApplicationInfo> data =
+    public final ArrayList<ApplicationInfo> data =
             new ArrayList<ApplicationInfo>(DEFAULT_APPLICATIONS_NUMBER);
     /** The list of apps that have been added since the last notify() call. */
     public ArrayList<ApplicationInfo> added =
@@ -44,7 +44,7 @@ class AllAppsList {
     /** The list of apps that have been modified since the last notify() call. */
     public ArrayList<ApplicationInfo> modified = new ArrayList<ApplicationInfo>();
 
-    private IconCache mIconCache;
+    private final IconCache mIconCache;
 
     /**
      * Boring constructor.

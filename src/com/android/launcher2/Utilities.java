@@ -85,7 +85,7 @@ final class Utilities {
         return bitmap;
     }
 
-    static int sColors[] = { 0xffff0000, 0xff00ff00, 0xff0000ff };
+    static final int[] sColors = { 0xffff0000, 0xff00ff00, 0xff0000ff };
     static int sColorIndex = 0;
 
     /**

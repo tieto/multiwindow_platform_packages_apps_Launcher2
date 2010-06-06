@@ -41,10 +41,10 @@ public class DragController {
     private static final String TAG = "Launcher.DragController";
 
     /** Indicates the drag is a move.  */
-    public static int DRAG_ACTION_MOVE = 0;
+    public static final int DRAG_ACTION_MOVE = 0;
 
     /** Indicates the drag is a copy.  */
-    public static int DRAG_ACTION_COPY = 1;
+    public static final int DRAG_ACTION_COPY = 1;
 
     private static final int SCROLL_DELAY = 600;
     private static final int SCROLL_ZONE = 20;
@@ -58,12 +58,12 @@ public class DragController {
     private static final int SCROLL_LEFT = 0;
     private static final int SCROLL_RIGHT = 1;
 
-    private Context mContext;
-    private Handler mHandler;
+    private final Context mContext;
+    private final Handler mHandler;
     private final Vibrator mVibrator = new Vibrator();
 
     // temporaries to avoid gc thrash
-    private Rect mRectTemp = new Rect();
+    private final Rect mRectTemp = new Rect();
     private final int[] mCoordinatesTemp = new int[2];
 
     /** Whether or not we're dragging. */
@@ -76,7 +76,7 @@ public class DragController {
     private float mMotionDownY;
 
     /** Info about the screen for clamping. */
-    private DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+    private final DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 
     /** Original view that is being dragged.  */
     private View mOriginator;
@@ -97,7 +97,7 @@ public class DragController {
     private DragView mDragView;
 
     /** Who can receive drop events */
-    private ArrayList<DropTarget> mDropTargets = new ArrayList<DropTarget>();
+    private final ArrayList<DropTarget> mDropTargets = new ArrayList<DropTarget>();
 
     private DragListener mListener;
 
@@ -111,7 +111,7 @@ public class DragController {
 
     private DragScroller mDragScroller;
     private int mScrollState = SCROLL_OUTSIDE_ZONE;
-    private ScrollRunnable mScrollRunnable = new ScrollRunnable();
+    private final ScrollRunnable mScrollRunnable = new ScrollRunnable();
 
     private RectF mDeleteRegion;
     private DropTarget mLastDropTarget;

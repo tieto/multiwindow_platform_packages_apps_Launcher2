@@ -29,9 +29,9 @@ class SymmetricalLinearTween {
     private static final int FPS = 30;
     private static final int FRAME_TIME = 1000 / FPS;
 
-    Handler mHandler;
-    int mDuration;
-    TweenCallback mCallback;
+    final Handler mHandler;
+    final int mDuration;
+    final TweenCallback mCallback;
 
     boolean mRunning;
     long mBase;
@@ -87,7 +87,7 @@ class SymmetricalLinearTween {
         }
     }
 
-    Runnable mTick = new Runnable() {
+    final Runnable mTick = new Runnable() {
         public void run() {
             long base = mBase;
             long now = SystemClock.uptimeMillis();

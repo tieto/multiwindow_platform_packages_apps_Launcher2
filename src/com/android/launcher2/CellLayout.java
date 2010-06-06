@@ -35,17 +35,17 @@ import java.util.ArrayList;
 public class CellLayout extends ViewGroup {
     private boolean mPortrait;
 
-    private int mCellWidth;
-    private int mCellHeight;
+    private final int mCellWidth;
+    private final int mCellHeight;
     
-    private int mLongAxisStartPadding;
-    private int mLongAxisEndPadding;
+    private final int mLongAxisStartPadding;
+    private final int mLongAxisEndPadding;
 
-    private int mShortAxisStartPadding;
-    private int mShortAxisEndPadding;
+    private final int mShortAxisStartPadding;
+    private final int mShortAxisEndPadding;
 
-    private int mShortAxisCells;
-    private int mLongAxisCells;
+    private final int mShortAxisCells;
+    private final int mLongAxisCells;
 
     private int mWidthGap;
     private int mHeightGap;
@@ -53,10 +53,10 @@ public class CellLayout extends ViewGroup {
     private final Rect mRect = new Rect();
     private final CellInfo mCellInfo = new CellInfo();
     
-    int[] mCellXY = new int[2];
+    final int[] mCellXY = new int[2];
     boolean[][] mOccupied;
 
-    private RectF mDragRect = new RectF();
+    private final RectF mDragRect = new RectF();
 
     private boolean mDirtyTag;
     private boolean mLastDownOnOccupiedCell = false;

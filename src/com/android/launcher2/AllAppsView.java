@@ -80,10 +80,10 @@ public class AllAppsView extends RSSurfaceView
      * TODO: What about scrolling? */
     private int mLocks = LOCK_ICONS_PENDING;
 
-    private int mSlop;
-    private int mMaxFlingVelocity;
+    private final int mSlop;
+    private final int mMaxFlingVelocity;
 
-    private Defines mDefines = new Defines();
+    private final Defines mDefines = new Defines();
     private RenderScript mRS;
     private RolloRS mRollo;
     private ArrayList<ApplicationInfo> mAllAppsList;
@@ -606,8 +606,8 @@ public class AllAppsView extends RSSurfaceView
             int screenX = mMotionDownRawX - (w / 2);
             int screenY = mMotionDownRawY - h;
 
-            int left = (mDefines.ICON_TEXTURE_WIDTH_PX - mDefines.ICON_WIDTH_PX) / 2;
-            int top = (mDefines.ICON_TEXTURE_HEIGHT_PX - mDefines.ICON_HEIGHT_PX) / 2;
+            int left = (Defines.ICON_TEXTURE_WIDTH_PX - Defines.ICON_WIDTH_PX) / 2;
+            int top = (Defines.ICON_TEXTURE_HEIGHT_PX - Defines.ICON_HEIGHT_PX) / 2;
             mDragController.startDrag(bmp, screenX, screenY,
                     0, 0, w, h, this, app, DragController.DRAG_ACTION_COPY);
 

@@ -31,7 +31,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView {
     
     private CheckForLongPress mPendingCheckForLongPress;
     
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     
     public LauncherAppWidgetHostView(Context context) {
         super(context);

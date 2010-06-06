@@ -31,12 +31,11 @@ import java.util.ArrayList;
  */
 public class ShortcutsAdapter  extends ArrayAdapter<ShortcutInfo> {
     private final LayoutInflater mInflater;
-    private final PackageManager mPackageManager;
     private final IconCache mIconCache;
 
     public ShortcutsAdapter(Context context, ArrayList<ShortcutInfo> apps) {
         super(context, 0, apps);
-        mPackageManager = context.getPackageManager();
+        PackageManager mPackageManager = context.getPackageManager();
         mInflater = LayoutInflater.from(context);
         mIconCache = ((LauncherApplication)context.getApplicationContext()).getIconCache();
     }

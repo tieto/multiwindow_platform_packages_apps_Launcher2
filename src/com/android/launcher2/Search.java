@@ -59,10 +59,10 @@ public class Search extends LinearLayout
     private ImageButton mVoiceButton;
 
     /** The animation that morphs the search widget to the search dialog. */
-    private Animation mMorphAnimation;
+    private final Animation mMorphAnimation;
 
     /** The animation that morphs the search widget back to its normal position. */
-    private Animation mUnmorphAnimation;
+    private final Animation mUnmorphAnimation;
 
     // These four are passed to Launcher.startSearch() when the search widget
     // has finished morphing. They are instance variables to make it possible to update
@@ -73,9 +73,9 @@ public class Search extends LinearLayout
     private boolean mGlobalSearch;
 
     // For voice searching
-    private Intent mVoiceSearchIntent;
+    private final Intent mVoiceSearchIntent;
     
-    private int mWidgetTopOffset;
+    private final int mWidgetTopOffset;
 
     /**
      * Used to inflate the Workspace from XML.

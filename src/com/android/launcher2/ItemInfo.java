@@ -79,7 +79,7 @@ class ItemInfo {
     /**
      * Indicates whether the item is a gesture.
      */
-    boolean isGesture = false;
+    final boolean isGesture = false;
 
     ItemInfo() {
     }
