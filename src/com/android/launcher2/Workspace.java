@@ -625,7 +625,7 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mLauncher.isWorkspaceLocked() || mLauncher.isAllAppsVisible()) {
+            if (mLauncher.isWorkspaceTouchNotAllowed() || mLauncher.isAllAppsVisible()) {
                 return false;
             }
         }
@@ -634,9 +634,9 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        final boolean workspaceLocked = mLauncher.isWorkspaceLocked();
+        final boolean workspaceNotTouchable = mLauncher.isWorkspaceTouchNotAllowed();
         final boolean allAppsVisible = mLauncher.isAllAppsVisible();
-        if (workspaceLocked || allAppsVisible) {
+        if (workspaceNotTouchable || allAppsVisible) {
             return false; // We don't want the events.  Let them fall through to the all apps view.
         }
 
@@ -842,7 +842,7 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         
-        if (mLauncher.isWorkspaceLocked()) {
+        if (mLauncher.isWorkspaceTouchNotAllowed()) {
             return false; // We don't want the events.  Let them fall through to the all apps view.
         }
         if (mLauncher.isAllAppsVisible()) {

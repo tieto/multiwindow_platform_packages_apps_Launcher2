@@ -118,6 +118,8 @@ public class DragController {
 
     private InputMethodManager mInputMethodManager;
 
+    protected boolean mIsDragAllowed;
+
     /**
      * Interface to receive notifications when a drag starts or stops
      */
@@ -149,6 +151,10 @@ public class DragController {
         mHandler = new Handler();
     }
 
+    public void setDragAllowed() {
+        mIsDragAllowed = true;
+    }
+
     /**
      * Starts a drag.
      * 
@@ -159,6 +165,8 @@ public class DragController {
      *        {@link #DRAG_ACTION_COPY}
      */
     public void startDrag(View v, DragSource source, Object dragInfo, int dragAction) {
+        if (!mIsDragAllowed) return;
+
         mOriginator = v;
 
         Bitmap b = getViewBitmap(v);
@@ -202,6 +210,9 @@ public class DragController {
     public void startDrag(Bitmap b, int screenX, int screenY,
             int textureLeft, int textureTop, int textureWidth, int textureHeight,
             DragSource source, Object dragInfo, int dragAction) {
+
+        if (!mIsDragAllowed) return;
+
         if (PROFILE_DRAWING_DURING_DRAG) {
             android.os.Debug.startMethodTracing("Launcher");
         }

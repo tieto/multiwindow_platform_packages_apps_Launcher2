@@ -89,6 +89,7 @@ public class LauncherModel extends BroadcastReceiver {
 
     public interface Callbacks {
         public int getCurrentWorkspaceScreen();
+        public void releaseTouchDuringLoading();
         public void startBinding();
         public void bindItems(ArrayList<ItemInfo> shortcuts, int start, int end);
         public void bindFolders(HashMap<Long,FolderInfo> folders);
@@ -1030,6 +1031,10 @@ public class LauncherModel extends BroadcastReceiver {
                 // Wait until the queue goes empty.
                 mHandler.post(new Runnable() {
                     public void run() {
+                        Callbacks callbacks = tryGetCallbacks(oldCallbacks);
+                        if (callbacks != null && mIsLaunching) {
+                            callbacks.releaseTouchDuringLoading();
+                        }
                         if (DEBUG_LOADERS) {
                             Log.d(TAG, "Going to start binding widgets soon.");
                         }

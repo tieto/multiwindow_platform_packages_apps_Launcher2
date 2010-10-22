@@ -189,6 +189,7 @@ public final class Launcher extends Activity
     private SpannableStringBuilder mDefaultKeySsb = null;
 
     private boolean mWorkspaceLoading = true;
+    private boolean mIsTouchReleasedDuringLoading;
 
     private boolean mPaused = true;
     private boolean mRestoring;
@@ -1168,6 +1169,13 @@ public final class Launcher extends Activity
         return mWorkspaceLoading || mWaitingForResult;
     }
 
+    public boolean isWorkspaceTouchNotAllowed() {
+        if (mWorkspaceLoading == true){
+            return !mIsTouchReleasedDuringLoading;
+        }
+        return isWorkspaceLocked();
+    }
+
     private void addItems() {
         closeAllApps(true);
         showAddDialog(mMenuAddInfo);
@@ -2103,6 +2111,13 @@ public final class Launcher extends Activity
     }
 
     /**
+     * Implementation of the method from LauncherModel.Callbacks.
+     */
+    public void releaseTouchDuringLoading(){
+        mIsTouchReleasedDuringLoading = true;
+    }
+
+    /**
      * Refreshes the shortcuts shown on the workspace.
      *
      * Implementation of the method from LauncherModel.Callbacks.
@@ -2246,6 +2261,8 @@ public final class Launcher extends Activity
         }
 
         mWorkspaceLoading = false;
+        mIsTouchReleasedDuringLoading = false;
+        mDragController.setDragAllowed();
     }
 
     /**
