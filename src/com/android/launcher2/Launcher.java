@@ -224,7 +224,6 @@ public final class Launcher extends Activity
 
         mAppWidgetManager = AppWidgetManager.getInstance(this);
         mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
-        mAppWidgetHost.startListening();
 
         if (PROFILE_STARTUP) {
             android.os.Debug.startMethodTracing(
@@ -2246,6 +2245,7 @@ public final class Launcher extends Activity
         }
 
         mWorkspaceLoading = false;
+        mAppWidgetHost.startListening();
     }
 
     /**
