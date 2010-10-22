@@ -66,6 +66,7 @@ public class LauncherProvider extends ContentProvider {
     private static final String DATABASE_NAME = "launcher.db";
     
     private static final int DATABASE_VERSION = 8;
+    protected final Object mLock = new Object();
 
     static final String AUTHORITY = "com.android.launcher2.settings";
     
@@ -106,67 +107,77 @@ public class LauncherProvider extends ContentProvider {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(args.table);
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        Cursor result = qb.query(db, projection, args.where, args.args, null, null, sortOrder);
-        result.setNotificationUri(getContext().getContentResolver(), uri);
+        synchronized (mLock) {
+            SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+            Cursor result = qb.query(db, projection, args.where, args.args, null, null, sortOrder);
+            result.setNotificationUri(getContext().getContentResolver(), uri);
 
-        return result;
+            return result;
+        }
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues initialValues) {
+    public synchronized Uri insert(Uri uri, ContentValues initialValues) {
         SqlArguments args = new SqlArguments(uri);
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        final long rowId = db.insert(args.table, null, initialValues);
-        if (rowId <= 0) return null;
+        synchronized (mLock) {
+            SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+            final long rowId = db.insert(args.table, null, initialValues);
+            if (rowId <= 0) return null;
 
-        uri = ContentUris.withAppendedId(uri, rowId);
-        sendNotify(uri);
+            uri = ContentUris.withAppendedId(uri, rowId);
+            sendNotify(uri);
 
-        return uri;
+            return uri;
+        }
     }
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
         SqlArguments args = new SqlArguments(uri);
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        db.beginTransaction();
-        try {
-            int numValues = values.length;
-            for (int i = 0; i < numValues; i++) {
-                if (db.insert(args.table, null, values[i]) < 0) return 0;
+        synchronized (mLock) {
+            SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                int numValues = values.length;
+                for (int i = 0; i < numValues; i++) {
+                    if (db.insert(args.table, null, values[i]) < 0) return 0;
+                }
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
+
+            sendNotify(uri);
+            return values.length;
         }
-
-        sendNotify(uri);
-        return values.length;
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public synchronized int delete(Uri uri, String selection, String[] selectionArgs) {
         SqlArguments args = new SqlArguments(uri, selection, selectionArgs);
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count = db.delete(args.table, args.where, args.args);
-        if (count > 0) sendNotify(uri);
+        synchronized (mLock) {
+            SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+            int count = db.delete(args.table, args.where, args.args);
+            if (count > 0) sendNotify(uri);
 
-        return count;
+            return count;
+        }
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public synchronized int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SqlArguments args = new SqlArguments(uri, selection, selectionArgs);
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count = db.update(args.table, values, args.where, args.args);
-        if (count > 0) sendNotify(uri);
+        synchronized (mLock) {
+            SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+            int count = db.update(args.table, values, args.where, args.args);
+            if (count > 0) sendNotify(uri);
 
-        return count;
+            return count;
+        }
     }
 
     private void sendNotify(Uri uri) {
