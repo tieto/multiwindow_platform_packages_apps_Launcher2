@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.os.SystemClock;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.ProgramFragment;
@@ -131,7 +132,10 @@ public class AllApps3D extends RSSurfaceView
     private boolean mSurrendered;
 
     private int mRestoreFocusIndex = -1;
-    
+
+    private long lastZoomChanged;
+    private float mLastZoom;
+
     @SuppressWarnings({"UnusedDeclaration"})
     static class Defines {
         public static final int ALLOC_PARAMS = 0;
@@ -822,6 +826,10 @@ public class AllApps3D extends RSSurfaceView
      * sRollo being null.
      */
     public boolean isVisible() {
+        long now = SystemClock.uptimeMillis();
+        if(mZoom < 0.5 && mLastZoom > mZoom && now-lastZoomChanged > 200 ) {
+            mZoom = 0.0f;
+        }
         return sRollo != null && mZoom > 0.001f;
     }
 
