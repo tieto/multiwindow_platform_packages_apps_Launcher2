@@ -701,7 +701,6 @@ public class LauncherModel extends BroadcastReceiver {
                             }
 
                             if (info != null) {
-                                updateSavedIcon(context, info, c, iconIndex);
 
                                 info.intent = intent;
                                 info.id = c.getLong(idIndex);
@@ -710,6 +709,8 @@ public class LauncherModel extends BroadcastReceiver {
                                 info.screen = c.getInt(screenIndex);
                                 info.cellX = c.getInt(cellXIndex);
                                 info.cellY = c.getInt(cellYIndex);
+
+                                updateSavedIcon(context, info, c, iconIndex);
 
                                 // check & update map of what's occupied
                                 if (!checkItemPlacement(occupied, info)) {
