@@ -139,14 +139,29 @@ public class WallpaperChooser extends Activity implements AdapterView.OnItemSele
         }
 
         mIsWallpaperSet = true;
-        try {
-            WallpaperManager wpm = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
-            wpm.setResource(mImages.get(position));
-            setResult(RESULT_OK);
-            finish();
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to set wallpaper: " + e);
-        }
+
+        new AsyncTask<Integer, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Integer... offset) {
+                try {
+                    WallpaperManager wpm = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
+                    wpm.setResource(mImages.get(offset[0]));
+                } catch (IOException e) {
+                    Log.e(TAG, "Failed to set wallpaper: " + e);
+                    cancel(true);
+                }
+                return RESULT_OK;
+            }
+
+            @Override
+            protected void onPostExecute(Integer value) {
+                if (value != null) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        }.execute(position);
     }
 
     public void onNothingSelected(AdapterView parent) {
