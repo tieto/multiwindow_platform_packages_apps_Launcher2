@@ -62,7 +62,7 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
     /**
      * The velocity at which a fling gesture will cause us to snap to the next screen
      */
-    private static final int SNAP_VELOCITY = 600;
+    private static final int SNAP_VELOCITY = 900;
 
     private final WallpaperManager mWallpaperManager;
     
@@ -127,7 +127,7 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource, Drag
 
     private WorkspaceOvershootInterpolator mScrollInterpolator;
 
-    private static final float BASELINE_FLING_VELOCITY = 2500.f;
+    private static final float BASELINE_FLING_VELOCITY = 7900.f;
     private static final float FLING_VELOCITY_INFLUENCE = 0.4f;
     
     private static class WorkspaceOvershootInterpolator implements Interpolator {
