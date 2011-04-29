@@ -96,7 +96,7 @@ public class LauncherModel extends BroadcastReceiver {
     private Bitmap mDefaultIcon;
 
     public interface Callbacks {
-        public boolean setLoadOnResume();
+
         public int getCurrentWorkspaceScreen();
         public void startBinding();
         public void bindItems(ArrayList<ItemInfo> shortcuts, int start, int end);
@@ -349,20 +349,13 @@ public class LauncherModel extends BroadcastReceiver {
             // First, schedule to add these apps back in.
             String[] packages = intent.getStringArrayExtra(Intent.EXTRA_CHANGED_PACKAGE_LIST);
             enqueuePackageUpdated(new PackageUpdatedTask(PackageUpdatedTask.OP_ADD, packages));
-            // Then, rebind everything.
-            boolean runLoader = true;
-            if (mCallbacks != null) {
-                Callbacks callbacks = mCallbacks.get();
-                if (callbacks != null) {
-                    // If they're paused, we can skip loading, because they'll do it again anyway
-                    if (callbacks.setLoadOnResume()) {
-                        runLoader = false;
-                    }
-                }
+
+            if(packages == null || packages.length ==0)
+               return;
+            synchronized (this) {
+               mAllAppsLoaded = mWorkspaceLoaded = false;
             }
-            if (runLoader) {
-                startLoader(mApp, false);
-            }
+            startLoader(context, false);
 
         } else if (Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE.equals(action)) {
             String[] packages = intent.getStringArrayExtra(Intent.EXTRA_CHANGED_PACKAGE_LIST);

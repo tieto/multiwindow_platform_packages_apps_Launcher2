@@ -2126,30 +2126,6 @@ public final class Launcher extends Activity
     }
 
     /**
-     * If the activity is currently paused, signal that we need to re-run the loader
-     * in onResume.
-     *
-     * This needs to be called from incoming places where resources might have been loaded
-     * while we are paused.  That is becaues the Configuration might be wrong
-     * when we're not running, and if it comes back to what it was when we
-     * were paused, we are not restarted.
-     *
-     * Implementation of the method from LauncherModel.Callbacks.
-     *
-     * @return true if we are currently paused.  The caller might be able to
-     * skip some work in that case since we will come back again.
-     */
-    public boolean setLoadOnResume() {
-        if (mPaused) {
-            Log.i(TAG, "setLoadOnResume");
-            mOnResumeNeedsLoad = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public int getCurrentWorkspaceScreen() {
@@ -2193,8 +2169,6 @@ public final class Launcher extends Activity
      */
     public void bindItems(ArrayList<ItemInfo> shortcuts, int start, int end) {
 
-        setLoadOnResume();
-
         final Workspace workspace = mWorkspace;
 
         for (int i=start; i<end; i++) {
@@ -2232,7 +2206,7 @@ public final class Launcher extends Activity
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void bindFolders(HashMap<Long, FolderInfo> folders) {
-        setLoadOnResume();
+
         sFolders.clear();
         sFolders.putAll(folders);
     }
@@ -2243,7 +2217,6 @@ public final class Launcher extends Activity
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void bindAppWidget(LauncherAppWidgetInfo item) {
-        setLoadOnResume();
 
         final long start = DEBUG_WIDGETS ? SystemClock.uptimeMillis() : 0;
         if (DEBUG_WIDGETS) {
@@ -2281,7 +2254,6 @@ public final class Launcher extends Activity
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void finishBindingItems() {
-        setLoadOnResume();
 
         if (mSavedState != null) {
             if (!mWorkspace.hasFocus()) {
@@ -2328,7 +2300,7 @@ public final class Launcher extends Activity
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void bindAppsAdded(ArrayList<ApplicationInfo> apps) {
-        setLoadOnResume();
+
         removeDialog(DIALOG_CREATE_SHORTCUT);
         mAllAppsGrid.addApps(apps);
     }
@@ -2339,7 +2311,7 @@ public final class Launcher extends Activity
      * Implementation of the method from LauncherModel.Callbacks.
      */
     public void bindAppsUpdated(ArrayList<ApplicationInfo> apps) {
-        setLoadOnResume();
+
         removeDialog(DIALOG_CREATE_SHORTCUT);
         mWorkspace.updateShortcuts(apps);
         mAllAppsGrid.updateApps(apps);
