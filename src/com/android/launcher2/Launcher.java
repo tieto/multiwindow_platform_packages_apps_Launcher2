@@ -2915,6 +2915,11 @@ public final class Launcher extends Activity
         final Workspace workspace = mWorkspace;
 
         mWorkspace.clearDropTargets();
+        // Before rebind starts, cancel ongoing dragging operation
+        if (mDragController.isDragging()) {
+            mDragController.cancelDrag();
+        }
+
         int count = workspace.getChildCount();
         for (int i = 0; i < count; i++) {
             // Use removeAllViewsInLayout() to avoid an extra requestLayout() and invalidate().
