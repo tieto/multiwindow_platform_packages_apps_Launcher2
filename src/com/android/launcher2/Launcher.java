@@ -2935,6 +2935,11 @@ public final class Launcher extends Activity
     public void bindItems(ArrayList<ItemInfo> shortcuts, int start, int end) {
         setLoadOnResume();
 
+        // Before all item views are re-created, cancel the ongoing dragging action which keeps old items view.
+        if (mDragController.isDragging()) {
+            mDragController.cancelDrag();
+        }
+
         final Workspace workspace = mWorkspace;
         for (int i=start; i<end; i++) {
             final ItemInfo item = shortcuts.get(i);
