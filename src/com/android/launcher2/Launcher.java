@@ -3795,12 +3795,16 @@ public final class Launcher extends Activity
         }
     }
     public void showFirstRunAllAppsCling(int[] position) {
-        // Enable the clings only if they have not been dismissed before
-        if (isClingsEnabled() &&
-                !mSharedPrefs.getBoolean(Cling.ALLAPPS_CLING_DISMISSED_KEY, false)) {
-            initCling(R.id.all_apps_cling, position, true, 0);
-        } else {
-            removeCling(R.id.all_apps_cling);
+        final Configuration configuration = getResources().getConfiguration();
+        // Avoid showing the clings if no touchscreen
+        if ( configuration.touchscreen != Configuration.TOUCHSCREEN_NOTOUCH ) {
+            // Enable the clings only if they have not been dismissed before
+            if (isClingsEnabled() &&
+                    !mSharedPrefs.getBoolean(Cling.ALLAPPS_CLING_DISMISSED_KEY, false)) {
+                initCling(R.id.all_apps_cling, position, true, 0);
+            } else {
+                removeCling(R.id.all_apps_cling);
+            }
         }
     }
     public Cling showFirstRunFoldersCling() {
