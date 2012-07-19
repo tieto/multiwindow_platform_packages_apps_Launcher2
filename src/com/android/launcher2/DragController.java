@@ -575,6 +575,12 @@ public class DragController {
                 mScrollState = SCROLL_OUTSIDE_ZONE;
             }
             break;
+        case MotionEvent.ACTION_POINTER_UP:
+            // Get the last pointer index
+            int index = ev.getPointerCount() - 1;
+            mDragObject.dragView.move((int)ev.getX(index), (int)ev.getY(index));
+            break;
+        case MotionEvent.ACTION_POINTER_DOWN:
         case MotionEvent.ACTION_MOVE:
             handleMoveEvent(dragLayerX, dragLayerY);
             break;
