@@ -45,9 +45,9 @@
     <string name="out_of_space" msgid="8365249326091984698">"No queda espacio en el escritorio."</string>
     <string name="hotseat_out_of_space" msgid="6304886797358479361">"No queda espacio en la barra de accesos directos."</string>
     <string name="invalid_hotseat_item" msgid="6545340627805449250">"Este widget es demasiado grande para la barra de accesos directos."</string>
-    <string name="shortcut_installed" msgid="7071557296331322355">"Se ha creado el acceso directo \"<xliff:g id="NAME">%s</xliff:g>\"."</string>
-    <string name="shortcut_uninstalled" msgid="2129499669449749995">"Se ha eliminado el acceso directo \"<xliff:g id="NAME">%s</xliff:g>\"."</string>
-    <string name="shortcut_duplicate" msgid="4757756326465060694">"El acceso directo \"<xliff:g id="NAME">%s</xliff:g>\" ya existe."</string>
+    <string name="shortcut_installed" msgid="7071557296331322355">"Se ha creado el acceso directo \u00AB<xliff:g id="NAME">%s</xliff:g>\u00BB."</string>
+    <string name="shortcut_uninstalled" msgid="2129499669449749995">"Se ha eliminado el acceso directo \u00AB<xliff:g id="NAME">%s</xliff:g>\u00BB."</string>
+    <string name="shortcut_duplicate" msgid="4757756326465060694">"El acceso directo \u00AB<xliff:g id="NAME">%s</xliff:g>\u00BB ya existe."</string>
     <string name="title_select_shortcut" msgid="1873670208166882222">"Elegir acceso directo"</string>
     <string name="title_select_application" msgid="1793455815754848652">"Selecciona una aplicación"</string>
     <string name="all_apps_button_label" msgid="2578400570124163469">"Aplicaciones"</string>
