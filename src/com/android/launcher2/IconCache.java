@@ -17,9 +17,11 @@
 package com.android.launcher2;
 
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -27,9 +29,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.util.HashMap;
 
+import com.android.internal.telephony.cat.AppInterface;
 /**
  * Cache of application icons.  Icons can be made from any thread.
  */
@@ -50,6 +54,21 @@ public class IconCache {
     private final HashMap<ComponentName, CacheEntry> mCache =
             new HashMap<ComponentName, CacheEntry>(INITIAL_ICON_CACHE_CAPACITY);
     private int mIconDpi;
+    private static String mStkStartTitle = null;
+
+    private BroadcastReceiver mStkCmdReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.d(TAG, "received stk intent");
+            if (action.equals(AppInterface.CAT_CMD_START_ACTION)) {
+                String stkMenuTitle = (String)intent.getExtra("StkMenuTitle");
+                if(stkMenuTitle != null) {
+                        mStkStartTitle = stkMenuTitle;
+                    }
+                }
+            }
+    };
 
     public IconCache(LauncherApplication context) {
         ActivityManager activityManager =
@@ -61,6 +80,9 @@ public class IconCache {
 
         // need to set mIconDpi before getting default icon
         mDefaultIcon = makeDefaultIcon();
+        IntentFilter intentFilter = new IntentFilter(AppInterface.CAT_CMD_START_ACTION);
+        mContext.registerReceiver(mStkCmdReceiver,intentFilter);
+
     }
 
     public Drawable getFullResDefaultActivityIcon() {
@@ -210,6 +232,14 @@ public class IconCache {
                 entry.title = info.activityInfo.name;
             }
 
+            if(componentName.getPackageName().equals("com.android.stk")) {
+                Log.d(TAG, "package is stk");
+                if(mStkStartTitle != null) {
+                    Log.d(TAG, "there is stk menu tile need update");
+                    entry.title = mStkStartTitle;
+                }
+            }
+
             entry.icon = Utilities.createIconBitmap(
                     getFullResIcon(info), mContext);
         }
@@ -225,5 +255,9 @@ public class IconCache {
             }
             return set;
         }
+    }
+
+    public void uregisterBroadcast() {
+        mContext.unregisterReceiver(mStkCmdReceiver);
     }
 }
