@@ -83,7 +83,7 @@ public class LauncherApplication extends Application {
         super.onTerminate();
 
         unregisterReceiver(mModel);
-
+        mIconCache.uregisterBroadcast();
         ContentResolver resolver = getContentResolver();
         resolver.unregisterContentObserver(mFavoritesObserver);
     }
