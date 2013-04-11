@@ -3430,6 +3430,17 @@ public class Workspace extends SmoothPagedView
         return true;
     }
 
+
+    @Override
+    protected void dispatchSaveInstanceState(SparseArray<Parcelable> container) {
+        super.dispatchSaveInstanceState(container);
+
+        // This is necessary as mSavedStates has to be up-to-date for
+        // restoreInstanceStateForRemainingPages to work correctly.
+        // See https://code.google.com/p/android/issues/detail?id=42534
+        mSavedStates = container;
+    }
+
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
