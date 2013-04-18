@@ -12,6 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Portions of this file are:
+ * Copyright (C) 2013 Motorola Mobility LLC All Rights Reserved.
  */
 
 package com.android.launcher2;
@@ -1071,6 +1074,11 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         if (xMoved || xPaged || yMoved) {
             if (mUsePagingTouchSlop ? xPaged : xMoved) {
                 // Scroll if the user moved far enough along the X axis
+                final float deltaX = mLastMotionX - x;
+                if (!mDeferScrollUpdate) {
+                    scrollBy((int) deltaX, 0);
+                    if (DEBUG) Log.d(TAG, "determineScrollingStart().Scrolling: " + deltaX);
+                }
                 mTouchState = TOUCH_STATE_SCROLLING;
                 mTotalMotionX += Math.abs(mLastMotionX - x);
                 mLastMotionX = x;
