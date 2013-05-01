@@ -142,6 +142,6 @@ public class Hotseat extends FrameLayout {
         int y = getCellYFromOrder(mAllAppsButtonRank);
         CellLayout.LayoutParams lp = new CellLayout.LayoutParams(x,y,1,1);
         lp.canReorder = false;
-        mContent.addViewToCellLayout(allAppsButton, -1, 0, lp, true);
+        mContent.addViewToCellLayout(allAppsButton, -1, View.NO_ID, lp, true);
     }
 }
