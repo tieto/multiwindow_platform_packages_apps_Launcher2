@@ -1071,6 +1071,13 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         if (xMoved || xPaged || yMoved) {
             if (mUsePagingTouchSlop ? xPaged : xMoved) {
                 // Scroll if the user moved far enough along the X axis
+                // BEGIN MOT w00263 12-Mar-2013 IKJB42MAIN-6921 Eliminate 1 frame drawing delay at start of scroll
+                final float deltaX = mLastMotionX - x;
+                if (!mDeferScrollUpdate) {
+                    scrollBy((int) deltaX, 0);
+                    if (DEBUG) Log.d(TAG, "determineScrollingStart().Scrolling: " + deltaX);
+                }
+                // END MOT w00263 12-Mar-2013 IKJB42MAIN-6921 Eliminate 1 frame drawing delay at start of scroll
                 mTouchState = TOUCH_STATE_SCROLLING;
                 mTotalMotionX += Math.abs(mLastMotionX - x);
                 mLastMotionX = x;
