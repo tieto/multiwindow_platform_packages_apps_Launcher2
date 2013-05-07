@@ -45,6 +45,7 @@ import android.os.Parcelable;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.text.SpannedString;
 import android.util.Log;
 
 import com.android.launcher.R;
@@ -2513,6 +2514,12 @@ public class LauncherModel extends BroadcastReceiver {
                 labelB = b.loadLabel(mPackageManager).toString();
 
                 mLabelCache.put(keyB, labelB);
+            }
+            if (labelA instanceof SpannedString) {
+                labelA = labelA.toString();
+            }
+            if (labelB instanceof SpannedString) {
+                labelB = labelB.toString();
             }
             return mCollator.compare(labelA, labelB);
         }
