@@ -261,6 +261,8 @@ public final class Launcher extends Activity
     private boolean mAttached = false;
 
     private static LocaleConfiguration sLocaleConfiguration = null;
+    // MOT IKJB42MAIN-11591 atzakis: 05.07.2013: Homescreen Flicker
+    private int mPauseConfigHash = 0;
 
     private static HashMap<Long, FolderInfo> sFolders = new HashMap<Long, FolderInfo>();
 
@@ -771,6 +773,8 @@ public final class Launcher extends Activity
 
         super.onPause();
         mPaused = true;
+        // MOT IKJB42MAIN-11591 atzakis: 05.07.2013: Homescreen Flicker Save hashCode when pause
+        mPauseConfigHash = getResources().getConfiguration().hashCode();
         mDragController.cancelDrag();
         mDragController.resetLastGestureUpTime();
     }
@@ -3265,13 +3269,17 @@ public final class Launcher extends Activity
      * skip some work in that case since we will come back again.
      */
     public boolean setLoadOnResume() {
-        if (mPaused) {
-            Log.i(TAG, "setLoadOnResume");
-            mOnResumeNeedsLoad = true;
-            return true;
-        } else {
-            return false;
+        if (mPaused)  {
+            // MOT IKJB42MAIN-11591 atzakis: 05.07.2013: Homescreen Flicker: If we get an update AND the configuration
+            // is different from the pause state then set the flag to reload.  If the Config is the same as when we 
+            // paused then the redraw which happens will redraw in the correct configuration.
+            if ((mOnResumeNeedsLoad) || (mPauseConfigHash != (getResources().getConfiguration().hashCode()))) {
+                Log.i(TAG, "setLoadOnResume");
+                mOnResumeNeedsLoad = true;
+                return true;
+            }
         }
+        return false;
     }
 
     /**
