@@ -2756,6 +2756,10 @@ public class Workspace extends SmoothPagedView
         ItemInfo item = (ItemInfo) d.dragInfo;
 
         // Ensure that we have proper spans for the item that we are dropping
+        if (item == null) {
+            Log.e(TAG, "invalid object passed in");
+            return;
+        }
         if (item.spanX < 0 || item.spanY < 0) throw new RuntimeException("Improper spans found");
         mDragViewVisualCenter = getDragViewVisualCenter(d.x, d.y, d.xOffset, d.yOffset,
             d.dragView, mDragViewVisualCenter);
