@@ -325,6 +325,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
      * @see #pauseScrolling()
      */
     void resumeScrolling() {
+        snapToDestination();
         mScrollingPaused = false;
     }
     /**
