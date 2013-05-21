@@ -535,7 +535,7 @@ public class FolderIcon extends LinearLayout implements FolderListener {
         if (mFolder == null) return;
         if (mFolder.getItemCount() == 0 && !mAnimating) return;
 
-        ArrayList<View> items = mFolder.getItemsInReadingOrder(false);
+        ArrayList<View> items = mFolder.getItemsInReadingOrder(true);
         Drawable d;
         TextView v;
 
