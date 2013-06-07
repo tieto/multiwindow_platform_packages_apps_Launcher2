@@ -1016,7 +1016,7 @@ public class LauncherModel extends BroadcastReceiver {
             }
         }
 
-        void runBindSynchronousPage(int synchronousBindPage) {
+        void runBindSynchronousPage(final int synchronousBindPage) {
             if (synchronousBindPage < 0) {
                 // Ensure that we have a valid page index to load synchronously
                 throw new RuntimeException("Should not call runBindSynchronousPage() without " +
@@ -1031,7 +1031,15 @@ public class LauncherModel extends BroadcastReceiver {
                 if (mIsLoaderTaskRunning) {
                     // Ensure that we are never running the background loading at this point since
                     // we also touch the background collections
-                    throw new RuntimeException("Error! Background loading is already running");
+                    // If we are in that state, we can't just throw a force close, as it's bad for
+                    // user.Instead we can implement a delayed start to the action.
+                    Log.e(TAG, "catch task happened! initiating wait!");
+                    sWorker.postDelayed(new Runnable() {
+                        public void run() {
+                            Log.e(TAG, "wait passed, attempting reentry");
+                            runBindSynchronousPage(synchronousBindPage);
+                        }
+                    }, 200);
                 }
             }
 
