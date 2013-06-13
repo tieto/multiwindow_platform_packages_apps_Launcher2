@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -239,7 +240,7 @@ public class DragController {
         mDragObject.dragSource = source;
         mDragObject.dragInfo = dragInfo;
 
-        mVibrator.vibrate(VIBRATE_DURATION);
+        mScrollView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
         final DragView dragView = mDragObject.dragView = new DragView(mLauncher, b, registrationX,
                 registrationY, 0, 0, b.getWidth(), b.getHeight(), initialDragViewScale);
