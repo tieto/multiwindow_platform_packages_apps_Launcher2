@@ -751,6 +751,10 @@ public final class Launcher extends Activity
             // Resets the previous all apps icon press state
             mAppsCustomizeContent.resetDrawableState();
         }
+        // Reset AllApps to its initial state
+        if (mAppsCustomizeTabHost != null) {
+            mAppsCustomizeTabHost.reset();
+        }
         // It is possible that widgets can receive updates while launcher is not in the foreground.
         // Consequently, the widgets will be inflated in the orientation of the foreground activity
         // (framework issue). On resuming, we ensure that any widgets are inflated for the current

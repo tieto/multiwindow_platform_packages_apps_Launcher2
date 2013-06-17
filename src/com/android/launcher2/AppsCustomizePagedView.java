@@ -1815,9 +1815,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
         }
 
-        if (mCurrentPage != 0) {
-            invalidatePageData(0);
-        }
+        invalidatePageData();
     }
 
     private AppsCustomizeTabHost getTabHost() {
