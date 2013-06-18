@@ -2253,7 +2253,10 @@ public class Workspace extends SmoothPagedView
                     final ItemInfo info = (ItemInfo) cell.getTag();
                     if (hasMovedLayouts) {
                         // Reparent the view
-                        getParentCellLayoutForView(cell).removeView(cell);
+                        CellLayout parent = getParentCellLayoutForView(cell);
+                        if (null != parent) {
+                            parent.removeView(cell);
+                        }
                         addInScreen(cell, container, screen, mTargetCell[0], mTargetCell[1],
                                 info.spanX, info.spanY);
                     }
@@ -2303,8 +2306,12 @@ public class Workspace extends SmoothPagedView
                     CellLayout.LayoutParams lp = (CellLayout.LayoutParams) cell.getLayoutParams();
                     mTargetCell[0] = lp.cellX;
                     mTargetCell[1] = lp.cellY;
-                    CellLayout layout = (CellLayout) cell.getParent().getParent();
-                    layout.markCellsAsOccupiedForView(cell);
+                    if (null != cell.getParent()) {
+                        CellLayout layout = (CellLayout) cell.getParent().getParent();
+                        if (null != layout) {
+                            layout.markCellsAsOccupiedForView(cell);
+                        }
+                    }
                 }
             }
 
