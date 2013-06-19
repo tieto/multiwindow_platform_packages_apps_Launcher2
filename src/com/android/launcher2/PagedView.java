@@ -656,6 +656,12 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             setHorizontalScrollBarEnabled(true);
             mFirstLayout = false;
         }
+
+        if (isPageMoving()) {
+            // layout request came while the page was moving; call snapToDestionation() to fix
+            // possible missalignment
+            snapToDestination();
+        }
     }
 
     protected void screenScrolled(int screenCenter) {
