@@ -2504,11 +2504,30 @@ public class LauncherModel extends BroadcastReceiver {
         return folderInfo;
     }
 
+    /**
+     * Returns a String without any leading whitespace, or any leading html chracters or
+     * entities or unicode values which may be rendered as whitespace.
+     */
+    private static String removeLeadingWhitespace(String text) {
+        if (text == null) {
+            return "";
+        }
+        
+        int pos = 0;
+        while (pos < text.length() && Character.isSpaceChar(text.charAt(pos))) {
+            pos++; // advance past that character
+        }
+
+        return text.substring(pos);
+    }
+
     public static final Comparator<ApplicationInfo> getAppNameComparator() {
         final Collator collator = Collator.getInstance();
         return new Comparator<ApplicationInfo>() {
             public final int compare(ApplicationInfo a, ApplicationInfo b) {
-                int result = collator.compare(a.title.toString(), b.title.toString());
+                int result = collator.compare(
+                    removeLeadingWhitespace(a.title.toString()), 
+                    removeLeadingWhitespace(b.title.toString()));
                 if (result == 0) {
                     result = a.componentName.compareTo(b.componentName);
                 }
@@ -2528,7 +2547,9 @@ public class LauncherModel extends BroadcastReceiver {
         final Collator collator = Collator.getInstance();
         return new Comparator<AppWidgetProviderInfo>() {
             public final int compare(AppWidgetProviderInfo a, AppWidgetProviderInfo b) {
-                return collator.compare(a.label.toString(), b.label.toString());
+                return collator.compare(
+                    removeLeadingWhitespace(a.label.toString()),
+                    removeLeadingWhitespace(b.label.toString()));
             }
         };
     }
@@ -2560,14 +2581,14 @@ public class LauncherModel extends BroadcastReceiver {
             if (mLabelCache.containsKey(keyA)) {
                 labelA = mLabelCache.get(keyA);
             } else {
-                labelA = a.loadLabel(mPackageManager).toString();
+                labelA = removeLeadingWhitespace(a.loadLabel(mPackageManager).toString());
 
                 mLabelCache.put(keyA, labelA);
             }
             if (mLabelCache.containsKey(keyB)) {
                 labelB = mLabelCache.get(keyB);
             } else {
-                labelB = b.loadLabel(mPackageManager).toString();
+                labelB = removeLeadingWhitespace(b.loadLabel(mPackageManager).toString());
 
                 mLabelCache.put(keyB, labelB);
             }
@@ -2588,17 +2609,19 @@ public class LauncherModel extends BroadcastReceiver {
             if (mLabelCache.containsKey(a)) {
                 labelA = mLabelCache.get(a);
             } else {
-                labelA = (a instanceof AppWidgetProviderInfo) ?
-                    ((AppWidgetProviderInfo) a).label :
-                    ((ResolveInfo) a).loadLabel(mPackageManager).toString();
+                labelA = removeLeadingWhitespace(
+                    (a instanceof AppWidgetProviderInfo) ?
+                        ((AppWidgetProviderInfo) a).label :
+                        ((ResolveInfo) a).loadLabel(mPackageManager).toString());
                 mLabelCache.put(a, labelA);
             }
             if (mLabelCache.containsKey(b)) {
                 labelB = mLabelCache.get(b);
             } else {
-                labelB = (b instanceof AppWidgetProviderInfo) ?
-                    ((AppWidgetProviderInfo) b).label :
-                    ((ResolveInfo) b).loadLabel(mPackageManager).toString();
+                labelB = removeLeadingWhitespace(
+                    (b instanceof AppWidgetProviderInfo) ?
+                        ((AppWidgetProviderInfo) b).label :
+                        ((ResolveInfo) b).loadLabel(mPackageManager).toString());
                 mLabelCache.put(b, labelB);
             }
             return mCollator.compare(labelA, labelB);
