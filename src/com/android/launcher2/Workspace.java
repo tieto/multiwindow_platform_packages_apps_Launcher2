@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2013 Tieto Poland Sp. z o.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -663,6 +664,12 @@ public class Workspace extends SmoothPagedView
             }
         }
         return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        snapToPage(mCurrentPage);
     }
 
     protected void reinflateWidgetsIfNecessary() {

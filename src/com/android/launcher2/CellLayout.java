@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2013 Tieto Poland Sp. z o.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,8 +69,6 @@ public class CellLayout extends ViewGroup {
     private int mCountX;
     private int mCountY;
 
-    private int mOriginalWidthGap;
-    private int mOriginalHeightGap;
     private int mWidthGap;
     private int mHeightGap;
     private int mMaxGap;
@@ -187,8 +186,8 @@ public class CellLayout extends ViewGroup {
 
         mCellWidth = a.getDimensionPixelSize(R.styleable.CellLayout_cellWidth, 10);
         mCellHeight = a.getDimensionPixelSize(R.styleable.CellLayout_cellHeight, 10);
-        mWidthGap = mOriginalWidthGap = a.getDimensionPixelSize(R.styleable.CellLayout_widthGap, 0);
-        mHeightGap = mOriginalHeightGap = a.getDimensionPixelSize(R.styleable.CellLayout_heightGap, 0);
+        mWidthGap = a.getDimensionPixelSize(R.styleable.CellLayout_widthGap, 0);
+        mHeightGap = a.getDimensionPixelSize(R.styleable.CellLayout_heightGap, 0);
         mMaxGap = a.getDimensionPixelSize(R.styleable.CellLayout_maxGap, 0);
         mCountX = LauncherModel.getCellCountX();
         mCountY = LauncherModel.getCellCountY();
@@ -977,18 +976,13 @@ public class CellLayout extends ViewGroup {
         int numWidthGaps = mCountX - 1;
         int numHeightGaps = mCountY - 1;
 
-        if (mOriginalWidthGap < 0 || mOriginalHeightGap < 0) {
-            int hSpace = widthSpecSize - getPaddingLeft() - getPaddingRight();
-            int vSpace = heightSpecSize - getPaddingTop() - getPaddingBottom();
-            int hFreeSpace = hSpace - (mCountX * mCellWidth);
-            int vFreeSpace = vSpace - (mCountY * mCellHeight);
-            mWidthGap = Math.min(mMaxGap, numWidthGaps > 0 ? (hFreeSpace / numWidthGaps) : 0);
-            mHeightGap = Math.min(mMaxGap,numHeightGaps > 0 ? (vFreeSpace / numHeightGaps) : 0);
-            mShortcutsAndWidgets.setCellDimensions(mCellWidth, mCellHeight, mWidthGap, mHeightGap);
-        } else {
-            mWidthGap = mOriginalWidthGap;
-            mHeightGap = mOriginalHeightGap;
-        }
+        int hSpace = widthSpecSize - getPaddingLeft() - getPaddingRight();
+        int vSpace = heightSpecSize - getPaddingTop() - getPaddingBottom();
+        int hFreeSpace = hSpace - (mCountX * mCellWidth);
+        int vFreeSpace = vSpace - (mCountY * mCellHeight);
+        mWidthGap = Math.min(mMaxGap, numWidthGaps > 0 ? (hFreeSpace / numWidthGaps) : 0);
+        mHeightGap = Math.min(mMaxGap, numHeightGaps > 0 ? (vFreeSpace / numHeightGaps) : 0);
+        mShortcutsAndWidgets.setCellDimensions(mCellWidth, mCellHeight, mWidthGap, mHeightGap);
 
         // Initial values correspond to widthSpecMode == MeasureSpec.EXACTLY
         int newWidth = widthSpecSize;

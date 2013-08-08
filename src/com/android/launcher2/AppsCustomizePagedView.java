@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2013 Tieto Poland Sp. z o.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -475,8 +476,11 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         final boolean hostIsTransitioning = host.isTransitioning();
 
         // Restore the page
-        int page = getPageForComponent(mSaveInstanceStateItemIndex);
-        invalidatePageData(Math.max(0, page), hostIsTransitioning);
+        int page = Math.max(0, getPageForComponent(mSaveInstanceStateItemIndex));
+        if (isDataReady()) {
+            page = super.mCurrentPage;
+        }
+        invalidatePageData(page, hostIsTransitioning);
 
         // Show All Apps cling if we are finished transitioning, otherwise, we will try again when
         // the transition completes in AppsCustomizeTabHost (otherwise the wrong offsets will be
@@ -511,7 +515,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
-        if (!isDataReady()) {
+        boolean measureChanged = (widthMeasureSpec & View.MEASURED_SIZE_MASK) != getMeasuredWidth() ||
+                (heightMeasureSpec & View.MEASURED_SIZE_MASK) != getMeasuredHeight();
+        if (!isDataReady() || measureChanged) {
             if (!mApps.isEmpty() && !mWidgets.isEmpty()) {
                 setDataIsReady();
                 setMeasuredDimension(width, height);

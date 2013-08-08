@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2013 Tieto Poland Sp. z o.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +143,9 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        boolean remeasureTabWidth = (mTabs.getLayoutParams().width <= 0);
+        boolean remeasureTabWidth = (widthMeasureSpec & View.MEASURED_SIZE_MASK) != getMeasuredWidth() ||
+                (heightMeasureSpec & View.MEASURED_SIZE_MASK) != getMeasuredHeight() ||
+                mTabs.getLayoutParams().width <= 0;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         // Set the width of the tab list to the content width
