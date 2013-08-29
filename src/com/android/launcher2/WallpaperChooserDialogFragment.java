@@ -60,6 +60,7 @@ public class WallpaperChooserDialogFragment extends DialogFragment implements
     private ArrayList<Integer> mImages;
     private WallpaperLoader mLoader;
     private WallpaperDrawable mWallpaperDrawable = new WallpaperDrawable();
+    private Gallery mGallery;
 
     public static WallpaperChooserDialogFragment newInstance() {
         WallpaperChooserDialogFragment fragment = new WallpaperChooserDialogFragment();
@@ -91,16 +92,18 @@ public class WallpaperChooserDialogFragment extends DialogFragment implements
 
     @Override
     public void onDetach() {
-        super.onDetach();
-
         cancelLoader();
+        super.onDetach();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-
+        if (mGallery != null) {
+            mGallery.setOnItemSelectedListener(null);
+            mGallery = null;
+        }
         cancelLoader();
+        super.onDestroy();
     }
 
     @Override
@@ -139,16 +142,16 @@ public class WallpaperChooserDialogFragment extends DialogFragment implements
             View view = inflater.inflate(R.layout.wallpaper_chooser, container, false);
             view.setBackground(mWallpaperDrawable);
 
-            final Gallery gallery = (Gallery) view.findViewById(R.id.gallery);
-            gallery.setCallbackDuringFling(false);
-            gallery.setOnItemSelectedListener(this);
-            gallery.setAdapter(new ImageAdapter(getActivity()));
+            mGallery = (Gallery) view.findViewById(R.id.gallery);
+            mGallery.setCallbackDuringFling(false);
+            mGallery.setOnItemSelectedListener(this);
+            mGallery.setAdapter(new ImageAdapter(getActivity()));
 
             View setButton = view.findViewById(R.id.set);
             setButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectWallpaper(gallery.getSelectedItemPosition());
+                    selectWallpaper(mGallery.getSelectedItemPosition());
                 }
             });
             return view;
