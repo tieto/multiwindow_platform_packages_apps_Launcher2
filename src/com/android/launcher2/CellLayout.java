@@ -581,7 +581,13 @@ public class CellLayout extends ViewGroup {
     }
 
     public void restoreInstanceState(SparseArray<Parcelable> states) {
-        dispatchRestoreInstanceState(states);
+        try {
+            dispatchRestoreInstanceState(states);
+        } catch (IllegalArgumentException ex) {
+            Log.e(TAG, "Ignoring an error while restoring a view instance state", ex);
+            // got a wrong view due to view ids mess up; safe to ignore since we got a wrong view
+            // and there's nothing to restore
+        }
     }
 
     @Override
