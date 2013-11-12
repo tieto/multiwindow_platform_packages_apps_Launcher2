@@ -416,6 +416,11 @@ public class DeleteDropTarget extends ButtonDropTarget {
         } else if (mFlingDeleteMode == MODE_FLING_DELETE_ALONG_VECTOR) {
             updateCb = createFlingAlongVectorAnimatorListener(dragLayer, d, vel, startTime,
                     duration, config);
+            // If we don't defer, remove text will get stuck whenever user does a fling action
+            // due to timing sensitivities with the reversal animators. If we defer, it forces
+            // cleanup to follow the exitSpringLoadedDragMode path, which is a total
+            // refresh of workspace to standard mode.
+            mSearchDropTargetBar.deferOnDragEnd();
         }
         Runnable onAnimationEndRunnable = new Runnable() {
             @Override
