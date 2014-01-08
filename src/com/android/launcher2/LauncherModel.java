@@ -34,6 +34,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -1991,6 +1992,50 @@ public class LauncherModel extends BroadcastReceiver {
         sWorker.post(task);
     }
 
+    private void removeQueuedItems(String[] packages) {
+        String spKey = LauncherApplication.getSharedPreferencesKey();
+        SharedPreferences sp = mApp.getSharedPreferences(spKey,
+                              Context.MODE_PRIVATE);
+        Set<String> newApps = sp.getStringSet(InstallShortcutReceiver.NEW_APPS_LIST_KEY,
+                              null);
+        Set<String> savedApps = new HashSet<String>();
+        if (null != newApps) {
+            synchronized(newApps) {
+                savedApps.addAll(newApps);
+                Iterator<String> iter = newApps.iterator();
+                Intent intent = null;
+                String val = null;
+                while (iter.hasNext()) {
+                    val = iter.next();
+                    try {
+                        intent = Intent.parseUri(val, 0);
+                    } catch (URISyntaxException e) {
+                        continue;
+                    }
+                    for (int i=0; i < packages.length; i++) {
+                        if (intent.getComponent().getPackageName().equals(packages[i])) {
+                            savedApps.remove(val);
+                            deleteItemFromDatabase(intent.toUri(0));
+                        }
+                    }
+                }
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putStringSet(InstallShortcutReceiver.NEW_APPS_LIST_KEY,
+                                      savedApps);
+                if (savedApps.isEmpty()) {
+                    // Reset the page index if there are no more items
+                    editor.putInt(InstallShortcutReceiver.NEW_APPS_PAGE_KEY, -1);
+                }
+                editor.commit();
+            }
+        }
+    }
+
+    private int deleteItemFromDatabase(final String component) {
+        final ContentResolver cr = mApp.getContentResolver();
+        return cr.delete(LauncherSettings.Favorites.CONTENT_URI, LauncherSettings.BaseLauncherColumns.INTENT + " LIKE ?", new String[] {"%"+component+"%"});
+    }
+
     private class PackageUpdatedTask implements Runnable {
         int mOp;
         String[] mPackages;
@@ -2094,6 +2139,7 @@ public class LauncherModel extends BroadcastReceiver {
                 final ArrayList<String> removedPackageNames =
                         new ArrayList<String>(Arrays.asList(packages));
 
+                removeQueuedItems(packages);
                 mHandler.post(new Runnable() {
                     public void run() {
                         Callbacks cb = mCallbacks != null ? mCallbacks.get() : null;
