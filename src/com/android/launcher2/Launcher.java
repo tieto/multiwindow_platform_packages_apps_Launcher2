@@ -687,7 +687,7 @@ public final class Launcher extends Activity
         }
         mDragLayer.clearAnimatedView();
         // Exit spring loaded mode if necessary after cancelling the configuration of a widget
-        exitSpringLoadedDragModeDelayed((resultCode != RESULT_CANCELED), delayExitSpringLoadedMode,
+        exitSpringLoadedDragModeDelayed((resultCode != RESULT_CANCELED), true,
                 null);
     }
 
@@ -1484,7 +1484,6 @@ public final class Launcher extends Activity
                     }
 
                     closeFolder();
-                    exitSpringLoadedDragMode();
 
                     // If we are already on home, then just animate back to the workspace,
                     // otherwise, just wait until onResume to set the state back to Workspace
